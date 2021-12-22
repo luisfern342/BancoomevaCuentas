@@ -1,0 +1,223 @@
+<!doctype html>
+<html class="no-js" lang="">
+<head>
+  <meta charset="utf-8">
+  <meta name="description" content="">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>bancoomeva cuentas frontend</title>
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+  <!-- Place favicon.ico in the root directory -->
+  <!-- build:css styles/vendor.css -->
+  <link rel="stylesheet" href="/node_modules/bootstrap/dist/css/bootstrap.min.css" type="text/css"/>
+  <!-- endbuild -->
+  <!-- build:css styles/main.css -->
+  <link rel="stylesheet" href="styles/main.css">
+  <!-- endbuild -->
+  <!-- build:js scripts/modernizr.js -->
+  <script src="scripts/modernizr.js"></script>
+  <!-- endbuild -->
+</head>
+<body>
+<!--[if IE]>
+<p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade
+  your browser</a> to improve your experience.</p>
+<![endif]-->
+<div class="container">
+
+  <div class="row marketing">
+    <div class="col">
+      <form class="form-horizontal" id="frmRegistro">
+        <fieldset>
+
+          <!-- Form Name -->
+          <legend>Registro</legend>
+
+          <!-- Text input-->
+          <div class="form-group">
+            <label class="col-md-4 control-label" for="nombreCompleto">Nombre completo</label>
+            <div class="col-md-5">
+              <input id="nombreCompleto" name="nombreCompleto" type="text" placeholder="" class="form-control input-md" required="">
+
+            </div>
+          </div>
+
+          <!-- Text input-->
+          <div class="form-group">
+            <label class="col-md-4 control-label" for="documento">Documento</label>
+            <div class="col-md-5">
+              <input id="documento" name="documento" type="text" placeholder="" class="form-control input-md" required="">
+
+            </div>
+          </div>
+
+          <!-- Text input-->
+          <div class="form-group">
+            <label class="col-md-4 control-label" for="fechaExpedicion">Fecha expedición</label>
+            <div class="col-md-5">
+              <input id="fechaExpedicion" name="fechaExpedicion" type="date" placeholder="" class="form-control input-md" required="">
+
+            </div>
+          </div>
+
+          <!-- Text input-->
+          <div class="form-group">
+            <label class="col-md-4 control-label" for="fechaNacimiento">Fecha nacimiento</label>
+            <div class="col-md-5">
+              <input id="fechaNacimiento" name="fechaNacimiento" type="date" placeholder="" class="form-control input-md" required="">
+
+            </div>
+          </div>
+
+          <!-- Text input-->
+          <div class="form-group">
+            <label class="col-md-4 control-label" for="email">Email</label>
+            <div class="col-md-5">
+              <input id="email" name="email" type="email" placeholder="" class="form-control input-md" required="">
+
+            </div>
+          </div>
+
+          <!-- Password input-->
+          <div class="form-group">
+            <label class="col-md-4 control-label" for="password">Password</label>
+            <div class="col-md-5">
+              <input id="password" name="password" type="password" placeholder="" class="form-control input-md" required="">
+
+            </div>
+          </div>
+
+          <!-- Text input-->
+          <div class="form-group">
+            <label class="col-md-4 control-label" for="direccion">Direccion</label>
+            <div class="col-md-5">
+              <input id="direccion" name="direccion" type="text" placeholder="" class="form-control input-md" required="">
+
+            </div>
+          </div>
+
+          <!-- Select Basic -->
+          <div class="form-group">
+            <label class="col-md-4 control-label" for="tipoDocumentoId">Tipo documento</label>
+            <div class="col-md-5">
+              <select id="tipoDocumentoId" name="tipoDocumentoId" class="form-control">
+              </select>
+            </div>
+          </div>
+
+          <!-- Select Basic -->
+          <div class="form-group">
+            <label class="col-md-4 control-label" for="tipoUsuarioId">Tipo usuario</label>
+            <div class="col-md-5">
+              <select id="tipoUsuarioId" name="tipoUsuarioId" class="form-control">
+              </select>
+            </div>
+          </div>
+
+          <!-- Button -->
+          <div class="form-group">
+            <label class="col-md-4 control-label" for=""></label>
+            <div class="col-md-4">
+              <button id="" name="" class="btn btn-success">Registrar</button>
+            </div>
+          </div>
+
+        </fieldset>
+      </form>
+    </div>
+  </div>
+
+  <div class="footer">
+    <p>Bancoomeva</p>
+  </div>
+</div>
+<!-- build:js scripts/vendor.js -->
+<script type="text/javascript" src="/node_modules/jquery/dist/jquery.min.js"></script>
+<script type="text/javascript" src="/node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+<!-- endbuild -->
+<!-- build:js scripts/main.js -->
+<script src="scripts/main.js"></script>
+<script src="scripts/common.js"></script>
+<script>
+  function registrar(event) {
+    event.preventDefault();
+
+    let usuario = {
+      email: $('#email').val(),
+      password: $('#password').val(),
+      documento: $('#documento').val()
+    };
+
+    loadData(`${window.BASE_URL}/usuario/buscar-email?email=${usuario.email}`).then((data) => {
+      loadData(`${window.BASE_URL}/usuario/buscar-documento?documento=${usuario.documento}`, usuario).then((data) => {
+
+        if (!data['errors']) {
+          usuario['nombreCompleto'] = $('#nombreCompleto').val();
+          usuario['fechaExpedicion'] = $('#fechaExpedicion').val();
+          usuario['fechaNacimiento'] = $('#fechaNacimiento').val();
+          usuario['email'] = $('#email').val();
+          usuario['password'] = $('#password').val();
+          usuario['direccion'] = $('#direccion').val();
+          usuario['tipoDocumentoId'] = $('#tipoDocumentoId').val();
+          usuario['tipoUsuarioId'] = $('#tipoUsuarioId').val();
+
+          sendData(`${window.BASE_URL}/usuario`, usuario).then((data) => {
+            alert('El usuario se creó de forma satisfactoria.');
+
+            localStorage.setItem('tipoUsuario', $('#tipoUsuarioId').val());
+            localStorage.setItem('usuario', JSON.stringify(data['cliente']));
+
+            location.href = 'dashboard.html'
+          }).catch((error) => {
+            console.log(error);
+            alert('Hay errores al crear el usuario.');
+          });
+        } else {
+          alert('Ya existe un usuario con el documento especificado. Intente con otro documento');
+        }
+
+      }).catch((error) => {
+        alert('Ya existe un usuario con el documento especificado. Intente con otro documento');
+      });
+    }).catch((error) => {
+      alert('Ya existe un usuario con el email especificado. Intente con otro email.');
+    });
+
+    return false;
+  }
+
+  function cargarTiposDocumentos() {
+    loadData(`${window.BASE_URL}/tipo-documento`).then((data) => {
+      if (data['tiposDocumentos']) {
+        data['tiposDocumentos'].forEach((v, i) => {
+          $('#tipoDocumentoId').append(`<option value="${v['id']}">${v['nombre']}</option>`)
+        });
+      }
+    }).catch((error) => {
+      console.log(error);
+      alert('Hay errores de conexión. Intente nuevamente.');
+    });
+  }
+
+  function cargarTiposUsuarios() {
+    loadData(`${window.BASE_URL}/tipo-usuario`).then((data) => {
+      if (data['tiposUsuarios']) {
+        data['tiposUsuarios'].forEach((v, i) => {
+          $('#tipoUsuarioId').append(`<option value="${v['id']}">${v['nombrre']}</option>`)
+        });
+      }
+    }).catch((error) => {
+      console.log(error);
+      alert('Hay errores de conexión. Intente nuevamente.');
+    });
+  }
+
+  $(() => {
+    cargarTiposDocumentos();
+    cargarTiposUsuarios();
+    $('#frmRegistro').on('submit', registrar);
+  });
+</script>
+<!-- endbuild -->
+</body>
+</html>
