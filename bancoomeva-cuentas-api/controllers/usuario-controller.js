@@ -4,7 +4,7 @@ const Usuario = require('../modelos/usuario')(sequelize, DataTypes);
 
 const {hashPassword, matchPassword} = require('../utils/password');
 
-const {sign, decode} = require('../utils/jwt')
+const {sign, decode} = require('../utils/jwt');
 
 
 module.exports.createCliente = async (request, response) => {
@@ -93,7 +93,10 @@ module.exports.loginCliente = async (request, response) => {
         let email = request.body.email;
         let password = request.body.password;
 
-        let usuario = await Usuario.findOne({where: {email: email}})
+        let usuario = await Usuario.findOne({where: {email: email}});
+
+        console.log(email, password);
+        console.log(usuario);
 
         if (!usuario) {
             response.status(401);
@@ -115,6 +118,44 @@ module.exports.loginCliente = async (request, response) => {
         return response.status(code).json({
             errors: {
                 body: ['Hay problemas con el login.', e.message]
+            }
+        });
+    }
+}
+
+
+module.exports.getById = async (request, response) => {
+    try {
+        let id = request.params.id;
+
+        let entidad = await Usuario.findByPk(id);
+
+        if (!entidad) {
+            throw new Error('No existe un usuario con el ID especificado.');
+        }
+
+        response.status(200).json(entidad);
+    } catch (e) {
+        const code = response.statusCode ? response.statusCode : 422;
+        return response.status(code).json({
+            errors: {
+                body: ['No se pudo encontrar un usuario por el ID especificado.', e.message]
+            }
+        });
+    }
+}
+
+
+module.exports.get = async (request, response) => {
+    try {
+        let entidades = await Usuario.findAll();
+
+        response.status(200).json(entidades);
+    } catch (e) {
+        const code = response.statusCode ? response.statusCode : 422;
+        return response.status(code).json({
+            errors: {
+                body: ['No se encontraron usuarios.', e.message]
             }
         });
     }

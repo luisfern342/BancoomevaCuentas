@@ -64,6 +64,28 @@ module.exports.getCuentaPorNumero = async (request, response) => {
 }
 
 
+module.exports.getCuentasPorUsuarioId = async (request, response) => {
+    try {
+        let usuarioId = request.params['usuario_id'];
+
+        let cuentas = await Cuenta.findAll({where: {usuario_id: usuarioId}})
+
+        if (!cuentas) {
+            throw new Error('No existen cuentas con el número especificado.');
+        }
+
+        response.status(200).json(cuentas);
+    } catch (e) {
+        const code = response.statusCode ? response.statusCode : 422;
+        return response.status(code).json({
+            errors: {
+                body: ['No se pudieron encontrar cuentas.', e.message]
+            }
+        });
+    }
+}
+
+
 module.exports.crearCuenta = async (request, response) => {
     try {
         let numero = request.body['numero'];
