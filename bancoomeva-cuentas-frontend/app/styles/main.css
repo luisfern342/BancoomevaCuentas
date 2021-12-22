@@ -42,7 +42,7 @@ body {
 /* Customize container */
 @media (min-width: 48em) {
   .container {
-    max-width: 46rem;
+    max-width: 48rem;
   }
 }
 .container-narrow > hr {
@@ -84,4 +84,9 @@ body {
   .jumbotron {
     border-bottom: 0;
   }
+}
+
+.container {
+  min-width: 80%;
+  max-width: 80%;
 }

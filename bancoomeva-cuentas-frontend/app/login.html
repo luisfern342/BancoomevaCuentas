@@ -55,7 +55,7 @@
   </div>
 
   <div class="footer">
-    <p>Bancoomeva</p>
+    <p><a href="index.html">Bancoomeva</a></p>
   </div>
 </div>
 <!-- build:js scripts/vendor.js -->
@@ -75,8 +75,19 @@
     };
 
     loadDataWithPost(`${window.BASE_URL}/usuario/login`, usuario).then((data) => {
-      console.log('ok');
+
       console.log(data);
+      localStorage.setItem('usuarioId', data['id']);
+      localStorage.setItem('usuario', JSON.stringify(data['cliente']));
+      console.log('ok');
+
+      if (data['tipo_usuario_id'] == 1) {
+        location.href = 'dashboard-admin.html'
+      } else if (data['tipo_usuario_id'] == 2) {
+        location.href = 'dashboard-admin.html'
+      } else if (data['tipo_usuario_id'] == 3) {
+        location.href = 'dashboard-cliente.html'
+      }
     }).catch((error) => {
       alert('Credenciales inválidas. Intente nuevamente.');
     });

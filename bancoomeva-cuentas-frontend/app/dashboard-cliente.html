@@ -30,13 +30,13 @@
         <a href="#" class="nav-link active">Home</a>
       </li>
       <li class="nav-item">
-        <a href="#" class="nav-link">About</a>
+        <a href="dashboard-cliente.html" class="nav-link">Cuentas</a>
       </li>
       <li class="nav-item">
-        <a href="login.html" class="nav-link">Login</a>
+        <a href="login.html" class="nav-link">Transferir</a>
       </li>
       <li class="nav-item">
-        <a href="registro.html" class="nav-link">Registro</a>
+        <a href="index.html" class="nav-link">Salir</a>
       </li>
     </ul>
     <h3 class="text-muted">Bancoomeva Cuentas</h3>
@@ -49,7 +49,20 @@
   </div>
 
   <div class="row marketing">
+    <table class="table">
+      <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Saldo</th>
+        <th scope="col">Fecha creación</th>
+        <th scope="col">Estado</th>
+        <th scope="col">Usuario</th>
+      </tr>
+      </thead>
+      <tbody id="tblCuentas">
 
+      </tbody>
+    </table>
   </div>
 
   <div class="footer">
@@ -61,7 +74,36 @@
 <script type="text/javascript" src="/node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
 <!-- endbuild -->
 <!-- build:js scripts/main.js -->
+<script src="scripts/common.js"></script>
 <script src="scripts/main.js"></script>
+<script>
+  function cargarCuentas() {
+    loadData(`${window.BASE_URL}/cuenta/usuario/${localStorage.getItem('usuarioId')}`).then((data) => {
+      let tblCuentas = $('#tblCuentas');
+      data.forEach((v) => {
+        let tds = [];
+
+        loadData(`${window.BASE_URL}/estado-cuenta/id/${v['estado_id']}`).then((dataEstadoCuenta) => {
+          loadData(`${window.BASE_URL}/usuario/id/${v['usuario_id']}`).then((dataUsuario) => {
+            tds.push(`<td>${v['numero']}</td>`);
+            tds.push(`<td>${v['saldo']}</td>`);
+            tds.push(`<td>${v['fecha_hora_creacion']}</td>`);
+            tds.push(`<td>${dataEstadoCuenta['nombre']}</td>`);
+            tds.push(`<td>${dataUsuario['nombre_completo']}</td>`);
+
+            tblCuentas.append(`<tr>${tds.join('')}</tr>`);
+          });
+        });
+      });
+    }).catch((error) => {
+      alert('Credenciales inválidas. Intente nuevamente.');
+    });
+  }
+
+  $(() => {
+    cargarCuentas();
+  });
+</script>
 <!-- endbuild -->
 </body>
 </html>

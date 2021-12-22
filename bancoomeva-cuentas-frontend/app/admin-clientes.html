@@ -1,0 +1,129 @@
+<!doctype html>
+<html class="no-js" lang="">
+<head>
+  <meta charset="utf-8">
+  <meta name="description" content="">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>bancoomeva cuentas frontend</title>
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+  <!-- Place favicon.ico in the root directory -->
+  <!-- build:css styles/vendor.css -->
+  <link rel="stylesheet" href="/node_modules/bootstrap/dist/css/bootstrap.min.css" type="text/css"/>
+  <!-- endbuild -->
+  <!-- build:css styles/main.css -->
+  <link rel="stylesheet" href="styles/main.css">
+  <!-- endbuild -->
+  <!-- build:js scripts/modernizr.js -->
+  <script src="scripts/modernizr.js"></script>
+  <!-- endbuild -->
+</head>
+<body>
+<!--[if IE]>
+<p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade
+  your browser</a> to improve your experience.</p>
+<![endif]-->
+<div class="container">
+  <div class="header">
+    <ul class="nav nav-pills float-right">
+      <li class="nav-item">
+        <a href="admin-cuentas.html" class="nav-link">Cuentas</a>
+      </li>
+      <li class="nav-item">
+        <a href="admin-clientes.html" class="nav-link">Clientes</a>
+      </li>
+      <li class="nav-item">
+        <a href="admin-solicitudes.html" class="nav-link">Solicitudes</a>
+      </li>
+      <li class="nav-item">
+        <a href="admin-reclamos.html" class="nav-link">Reclamos</a>
+      </li>
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown"
+           aria-expanded="false">
+          Dropdown
+        </a>
+        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <li><a class="dropdown-item" href="#">Action</a></li>
+          <li><a class="dropdown-item" href="#">Another action</a></li>
+          <li>
+            <hr class="dropdown-divider">
+          </li>
+          <li><a class="dropdown-item" href="#">Something else here</a></li>
+        </ul>
+      </li>
+    </ul>
+    <h3 class="text-muted">Bancoomeva Cuentas</h3>
+  </div>
+
+  <div class="jumbotron">
+    <h1 class="display-3">Bancoomeva Cuentas</h1>
+    <p class="lead">Bienvenidos</p>
+
+  </div>
+
+  <div class="row marketing">
+    <table class="table">
+      <thead>
+      <tr>
+        <th scope="col">Documento</th>
+        <th scope="col">Nombre completo</th>
+        <th scope="col">Fecha expedición</th>
+        <th scope="col">Fecha nacimiento</th>
+        <th scope="col">Email</th>
+        <th scope="col">Direccion</th>
+        <th scope="col">Tipo documento</th>
+        <th scope="col">Tipo usuario</th>
+      </tr>
+      </thead>
+      <tbody id="tblEntidades">
+
+      </tbody>
+    </table>
+  </div>
+
+  <div class="footer">
+    <p><a href="index.html">Bancoomeva</a></p>
+  </div>
+</div>
+<!-- build:js scripts/vendor.js -->
+<script type="text/javascript" src="/node_modules/jquery/dist/jquery.min.js"></script>
+<script type="text/javascript" src="/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+<!-- endbuild -->
+<!-- build:js scripts/main.js -->
+<script src="scripts/common.js"></script>
+<script src="scripts/main.js"></script>
+<script>
+  function cargarCuentas() {
+    loadData(`${window.BASE_URL}/usuario`).then((data) => {
+      let tblEntidades = $('#tblEntidades');
+      data.forEach((v) => {
+        let tds = [];
+
+        loadData(`${window.BASE_URL}/tipo-documento/id/${v['tipo_documento_id']}`).then((dataTipoDocumento) => {
+          loadData(`${window.BASE_URL}/tipo-usuario/id/${v['tipo_usuario_id']}`).then((dataTipoUsuario) => {
+            tds.push(`<td>${v['documento']}</td>`);
+            tds.push(`<td>${v['nombre_completo']}</td>`);
+            tds.push(`<td>${v['fecha_expedicion']}</td>`);
+            tds.push(`<td>${v['fecha_nacimiento']}</td>`);
+            tds.push(`<td>${v['email']}</td>`);
+            tds.push(`<td>${v['direccion']}</td>`);
+            tds.push(`<td>${dataTipoDocumento['nombre']}</td>`);
+            tds.push(`<td>${dataTipoUsuario['nombrre']}</td>`);
+
+            tblEntidades.append(`<tr>${tds.join('')}</tr>`);
+          });
+        });
+      });
+    }).catch((error) => {
+      alert('Credenciales inválidas. Intente nuevamente.');
+    });
+  }
+
+  $(() => {
+    cargarCuentas();
+  });
+</script>
+<!-- endbuild -->
+</body>
+</html>
