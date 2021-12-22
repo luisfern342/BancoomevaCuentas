@@ -1,17 +1,36 @@
-# Conduit (Medium Clone based on [realworld.io](https://github.com/gothinkster/realworld))
+# Bancoomeva Cuentas
 
-### Link to API - https://conduit-api-realworld.herokuapp.com/
+Gestor de cuentas bancarias del banco Bancoomeva.
 
-**Note**: _The website may take a minute to load sometimes, as the server may be in hibernate state_
+## Base de datos
 
-**_An Express and NodeJS based backend implementation of the [RealWorldAPI](https://github.com/gothinkster/realworld/tree/master/api) Spec._**
+Restaurar la base de datos desde el archivo script.sql desde **MySQL Workbench**, o phpMyAdmin, o desde el intérprete de comandos.
 
-_Also **approved** by realworld.io and listed on their [project's home page](https://codebase.show/projects/realworld?category=backend&language=javascript)_.
 
-## Technologies Used
+## API
 
-1. **_NodeJS_** - Platform
-2. **_Express_** - Framework
-3. **_JavaScript_** - Programming Language
-4. **_MySQL_** - Database
-5. **_Sequelize_** - ORM
+La carpeta `bancoomeva-cuentas-api` contiene un proyecto Node.JS con la API que permite recuperar y almacenar datos en una base de datos tipo MySQL.
+
+1. Instalar las dependencias con el comando desde la carpeta mencionada:
+
+	`npm install`
+
+2. Una vez instaladas las dependencias se debe ejecutar con el comando:
+
+	`npm start`
+
+## Front-End
+
+La carpeta `bancoomeva-cuentas-frontend` contiene el front-end para facilitar la interacción del usuario en la aplicación.
+
+1. Para la instalación de las dependencias se utiliza el comando:
+
+    `npm install`
+
+2. Una vez instaladas las dependencias se debe ejecutar con el comando:
+
+	`npm start -- --port=10001`
+
+3. Iniciar la aplicación desde el navegador ingresando a la siguiente URL:
+
+	`http://localhost:10001/index.html`
