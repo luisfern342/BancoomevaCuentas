@@ -9,7 +9,6 @@ const {sign, decode} = require('../utils/jwt')
 
 module.exports.createCliente = async (request, response) => {
     try {
-        console.log(request.body);
         let nombreCompleto = request.body['nombreCompleto'];
         let documento = request.body['documento'];
         let fechaExpedicion = request.body['fechaExpedicion'];

@@ -1,6 +1,6 @@
 var DataTypes = require("sequelize").DataTypes;
 var _cuenta = require("./cuenta");
-var _estado = require("./estado");
+var _estado_cuenta = require("./estado_cuenta");
 var _estado_solicitud = require("./estado_solicitud");
 var _movimiento = require("./movimiento");
 var _reclamo = require("./reclamo");
@@ -13,7 +13,7 @@ var _usuario = require("./usuario");
 
 function initModels(sequelize) {
   var cuenta = _cuenta(sequelize, DataTypes);
-  var estado = _estado(sequelize, DataTypes);
+  var estado_cuenta = _estado_cuenta(sequelize, DataTypes);
   var estado_solicitud = _estado_solicitud(sequelize, DataTypes);
   var movimiento = _movimiento(sequelize, DataTypes);
   var reclamo = _reclamo(sequelize, DataTypes);
@@ -30,8 +30,8 @@ function initModels(sequelize) {
   cuenta.hasMany(movimiento, { as: "cuenta_id_destino_movimientos", foreignKey: "cuenta_id_destino"});
   solicitud.belongsTo(cuenta, { as: "cuentum", foreignKey: "cuenta_id"});
   cuenta.hasMany(solicitud, { as: "solicituds", foreignKey: "cuenta_id"});
-  cuenta.belongsTo(estado, { as: "estado", foreignKey: "estado_id"});
-  estado.hasMany(cuenta, { as: "cuenta", foreignKey: "estado_id"});
+  cuenta.belongsTo(estado_cuenta, { as: "estado", foreignKey: "estado_id"});
+  estado_cuenta.hasMany(cuenta, { as: "cuenta", foreignKey: "estado_id"});
   solicitud.belongsTo(estado_solicitud, { as: "estado_solicitud", foreignKey: "estado_solicitud_id"});
   estado_solicitud.hasMany(solicitud, { as: "solicituds", foreignKey: "estado_solicitud_id"});
   reclamo.belongsTo(movimiento, { as: "movimiento", foreignKey: "movimiento_id"});
@@ -44,12 +44,16 @@ function initModels(sequelize) {
   tipo_movimiento.hasMany(movimiento, { as: "movimientos", foreignKey: "tipo_movimiento_id"});
   usuario.belongsTo(tipo_usuario, { as: "tipo_usuario", foreignKey: "tipo_usuario_id"});
   tipo_usuario.hasMany(usuario, { as: "usuarios", foreignKey: "tipo_usuario_id"});
+  cuenta.belongsTo(usuario, { as: "usuario", foreignKey: "usuario_id"});
+  usuario.hasMany(cuenta, { as: "cuenta", foreignKey: "usuario_id"});
+  reclamo.belongsTo(usuario, { as: "usuario", foreignKey: "usuario_id"});
+  usuario.hasMany(reclamo, { as: "reclamos", foreignKey: "usuario_id"});
   solicitud.belongsTo(usuario, { as: "usuario", foreignKey: "usuario_id"});
   usuario.hasMany(solicitud, { as: "solicituds", foreignKey: "usuario_id"});
 
   return {
     cuenta,
-    estado,
+    estado_cuenta,
     estado_solicitud,
     movimiento,
     reclamo,

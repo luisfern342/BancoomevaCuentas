@@ -26,7 +26,8 @@ module.exports = function(sequelize, DataTypes) {
     },
     email: {
       type: DataTypes.STRING(64),
-      allowNull: false
+      allowNull: false,
+      unique: "email_UNIQUE"
     },
     direccion: {
       type: DataTypes.STRING(64),
@@ -71,6 +72,14 @@ module.exports = function(sequelize, DataTypes) {
         using: "BTREE",
         fields: [
           { name: "documento" },
+        ]
+      },
+      {
+        name: "email_UNIQUE",
+        unique: true,
+        using: "BTREE",
+        fields: [
+          { name: "email" },
         ]
       },
       {

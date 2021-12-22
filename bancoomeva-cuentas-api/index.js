@@ -7,11 +7,16 @@ const {notFound, errorHandler} = require('./middleware/errorHandler');
 const sequelize = require('./dbConnection');
 
 const estadoSolicitudRoute = require('./routes/estados-solicitudes');
+const estadoCuentaRoute = require('./routes/estados-cuentas');
 const respuestaRoute = require('./routes/respuestas');
 const tipoDocumentoRoute = require('./routes/tipos-documentos');
 const tipoMovimientoRoute = require('./routes/tipos-movimientos');
 const tipoUsuarioRoute = require('./routes/tipos-usuarios');
 const usuarioRoute = require('./routes/usuarios');
+const cuentaRoute = require('./routes/cuentas');
+const solicitudRoute = require('./routes/solicitudes');
+const reclamoRoute = require('./routes/reclamos');
+const movimientoRoute = require('./routes/movimientos');
 
 const app = express()
 
@@ -30,10 +35,15 @@ app.get('/', (req, res) => {
 
 app.use('/api/usuario', usuarioRoute);
 app.use('/api/estado-solicitud', estadoSolicitudRoute);
+app.use('/api/estado-cuenta', estadoCuentaRoute);
 app.use('/api/respuesta', respuestaRoute);
 app.use('/api/tipo-documento', tipoDocumentoRoute);
 app.use('/api/tipo-movimiento', tipoMovimientoRoute);
 app.use('/api/tipo-usuario', tipoUsuarioRoute);
+app.use('/api/cuenta', cuentaRoute);
+app.use('/api/solicitud', solicitudRoute);
+app.use('/api/reclamo', reclamoRoute);
+app.use('/api/movimiento', movimientoRoute);
 
 app.use(notFound);
 app.use(errorHandler);
